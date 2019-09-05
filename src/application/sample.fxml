@@ -22,10 +22,10 @@
                   <Font size="18.0" />
                </font>
             </Text>
-            <Button fx:id="op_and" layoutX="175.0" layoutY="160.0" mnemonicParsing="false" onAction="#addAnd" prefHeight="40.0" prefWidth="40.0" text="∧" />
-            <Button fx:id="op_or" layoutX="246.0" layoutY="160.0" mnemonicParsing="false" onAction="#addOr" prefHeight="40.0" prefWidth="40.0" text="∨" />
-            <Button fx:id="op_not" layoutX="315.0" layoutY="160.0" mnemonicParsing="false" onAction="#addNot" prefHeight="40.0" prefWidth="40.0" text="¬" />
-            <Button fx:id="op_xor" layoutX="385.0" layoutY="160.0" mnemonicParsing="false" onAction="#addXor" prefHeight="40.0" prefWidth="40.0" text="⊕" />
+            <Button fx:id="op_and" layoutX="175.0" layoutY="160.0" mnemonicParsing="false" onAction="#buttonClickAnd" prefHeight="40.0" prefWidth="40.0" text="∧" />
+            <Button fx:id="op_or" layoutX="246.0" layoutY="160.0" mnemonicParsing="false" onAction="#buttonClickOr" prefHeight="40.0" prefWidth="40.0" text="∨" />
+            <Button fx:id="op_not" layoutX="315.0" layoutY="160.0" mnemonicParsing="false" onAction="#buttonClickNot" prefHeight="40.0" prefWidth="40.0" text="¬" />
+            <Button fx:id="op_xor" layoutX="385.0" layoutY="160.0" mnemonicParsing="false" onAction="#buttonClickXor" prefHeight="40.0" prefWidth="40.0" text="⊕" />
             <Button fx:id="generate" layoutX="439.0" layoutY="110.0" mnemonicParsing="false" text="Generate!" />
          </children></AnchorPane>
   </content>

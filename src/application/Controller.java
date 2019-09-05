@@ -1,58 +1,88 @@
 package application;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-
-import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Stack;
 
 public class Controller {
     @FXML
-    Button generate;
-    @FXML
-    Button op_and;
-    @FXML
-    Button op_or;
-    @FXML
-    Button op_not;
-    @FXML
-    Button op_xor;
-    @FXML
     TextField main_field;
 
-    enum Operation{
-        AND, OR, NOT, XOR;
+    enum Operation {
+        AND, OR, XOR
     }
 
-    public void printResult(){
+    public void buttonClickGenerate(){
 
     }
 
-    public void addAnd(){
+    public void buttonClickAnd() {
         String text = main_field.getText();
         text += " ∧ ";
         main_field.setText(text);
     }
 
-    public void addOr(){
+    public void buttonClickOr() {
         String text = main_field.getText();
         text += " ∨ ";
         main_field.setText(text);
     }
 
-    public void addNot(){
+    public void buttonClickNot() {
         String text = main_field.getText();
         text += " ¬ ";
         main_field.setText(text);
     }
 
-    public void addXor(){
+    public void buttonClickXor() {
         String text = main_field.getText();
         text += " ⊕ ";
         main_field.setText(text);
+    }
+
+    public boolean equationIsValid(String str) {
+        char prev = 0;
+        Stack<Character> parentheses_stack = new Stack<>();
+        for (char c : str.toCharArray()){
+            if (c == '('){
+                // Push to stack to count open parentheses.
+                // Ensure a variable does not precede an open parenthesis.
+                if (prev != 0 && !isTwoInputOperator(prev) && prev != '¬') return false;
+                parentheses_stack.push(c);
+            }
+            else if (c == ')'){
+                // Use stack to ensure balanced parentheses.
+                // Ensure no empty parentheses and no close parenthesis after an operator.
+                if (prev == '(' || isTwoInputOperator(prev)) return false;
+                if (parentheses_stack.isEmpty()) return false;
+                parentheses_stack.pop();
+            }
+            else if (isTwoInputOperator(c)){
+                // Ensure an operator does not come after an open parenthesis or another operator.
+                if (prev == '(' || isTwoInputOperator(c)) return false;
+            }
+            else if (c == '¬'){
+                // Ensure only an open parenthesis or operator can come before a not.
+                if (prev != '(' && prev != 0 && !isTwoInputOperator(prev)) return false;
+            }
+            else {
+                // Ensure only an open parenthesis, an operator, or a not can come before a variable.
+                if (prev != '(' && prev != 0 && !isTwoInputOperator(prev) && prev != '¬') return false;
+            }
+            prev = c;
+        }
+        return true;
+    }
+
+    public String trimSpaces(String str){
+        StringBuilder trimmed = new StringBuilder();
+        for (char c : str.toCharArray()){
+            if (c != ' ') trimmed.append(c);
+        }
+        return trimmed.toString();
     }
 
     /**
@@ -130,7 +160,6 @@ public class Controller {
 
     // TEST
     public static void printTruthTable(String str){
-        // ∧∨¬⊕
         HashSet<Character> variables = new HashSet<>();
         for (char c : str.toCharArray()) {
             if (c != '(' && c != ')' && c != '∧' && c != '∨' && c != '¬' && c != '⊕') {
@@ -140,6 +169,7 @@ public class Controller {
         printTableRecursive(str, variables, new HashMap<>());
     }
 
+    // TEST
     public static void printTableRecursive(String str, HashSet<Character> variables_rem, HashMap<Character, Integer> value_map){
         if (variables_rem.isEmpty()){
             for (Map.Entry<Character, Integer> entry : value_map.entrySet()){
@@ -173,5 +203,8 @@ public class Controller {
         value_map.remove(to_replace);
     }
 
+    public boolean isTwoInputOperator(char c){
+        return (c == '∧' || c == '∨' || c == '⊕');
+    }
 
 }
